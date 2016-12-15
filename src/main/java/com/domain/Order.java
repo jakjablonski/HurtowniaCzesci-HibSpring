@@ -1,11 +1,18 @@
 package com.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -14,19 +21,21 @@ import javax.persistence.NamedQuery;
 		@NamedQuery(name = "order.number", query = "Select o from order where o.number = :number")
 })
 public class Order {
-	private long id;
+	private Long id;
 	private String number;
 	private String date;
 	private String client;
+	private List<Unit> units = new ArrayList<Unit>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+	@Column(unique = true, nullable = false)
 	public String getNumber() {
 		return number;
 	}
@@ -45,8 +54,13 @@ public class Order {
 	public void setClient(String client) {
 		this.client = client;
 	}
-	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Unit> getUnits(){
+		return units;
+	}
+	public void setUnits(List<Unit> units){
+		this.units = units;
+	}
 	
 	
 	

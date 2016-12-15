@@ -11,6 +11,7 @@ public interface OrderManager {
 	List<Order> getAllOrders();
 	void deleteOrder(Order order);
 	Order findOrderbyId(Long id);
+	Order findOrderbyNumber(String number);
 	
 	void addUnit(Unit unit);
 	List<Unit> getAllUnits();

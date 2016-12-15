@@ -1,6 +1,6 @@
 package com.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -32,6 +32,8 @@ public class OrderManagerHibernateImpl implements OrderManager {
 		sessionFactory.getCurrentSession().persist(order);
 	}
 
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Order> getAllOrders() {
 		return sessionFactory.getCurrentSession().getNamedQuery("order.all").list();
@@ -40,27 +42,32 @@ public class OrderManagerHibernateImpl implements OrderManager {
 	@Override
 	public void deleteOrder(Order order) {
 		order = (Order) sessionFactory.getCurrentSession().get(Order.class, order.getId());
-		for (Order order : unit.getUnits()){
-			sessionFactory.getCurrentSession().update(unit);
+		for (Unit units : order.getUnits()){
+			sessionFactory.getCurrentSession().update(units);
 		}
 		sessionFactory.getCurrentSession().delete(order);
 	}
 
 	@Override
 	public Order findOrderbyId(Long id) {
-		return (Zamowienie) sessionFactory.getCurrentSession().getNamedQuery("order.id").setLong("id",id).uniqueResult();
+		return (Order) sessionFactory.getCurrentSession().getNamedQuery("order.id").setLong("id",id).uniqueResult();
+	}
+	
+	@Override
+	public Order findOrderbyNumber(String number) {
+		return (Order) sessionFactory.getCurrentSession().getNamedQuery("order.number").setString("number",number).uniqueResult();
 	}
 
 	@Override
 	public void addUnit(Unit unit) {
-		// TODO Auto-generated method stub
-		
+		unit.setId(null);
+		sessionFactory.getCurrentSession().persist(unit);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Unit> getAllUnits() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionFactory.getCurrentSession().getNamedQuery("unit.all").list();
 	}
 
 	@Override
@@ -71,8 +78,7 @@ public class OrderManagerHibernateImpl implements OrderManager {
 
 	@Override
 	public Unit findUnitById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (Unit) sessionFactory.getCurrentSession().getNamedQuery("unit.id").setLong("id",id).uniqueResult();
 	}
 
 	@Override
@@ -86,5 +92,9 @@ public class OrderManagerHibernateImpl implements OrderManager {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
-}
+		
+	}
+	
+
