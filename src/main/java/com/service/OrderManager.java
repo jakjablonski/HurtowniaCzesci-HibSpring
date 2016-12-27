@@ -18,7 +18,7 @@ public interface OrderManager {
 	void deleteUnit(Unit unit);
 	Unit findUnitById(Long id);
 	
-	List<Unit> getOwnedUnits(Unit unit);
+	List<Unit> getOwnedUnits(Order order);
 	void OrderUnit(Long orderId, Long unitId);
 
 }

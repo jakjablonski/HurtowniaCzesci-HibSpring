@@ -9,9 +9,9 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "unit.all", query = "Select u from unit"),
-		@NamedQuery(name = "unit.id", query = "Select u from unit where u.id = :id"),
-		@NamedQuery(name = "unit.number", query = "Select u from unit where u.number = :number")
+		@NamedQuery(name = "unit.all", query = "Select u from Unit u"),
+		@NamedQuery(name = "unit.id", query = "Select u from Unit u where u.id = :id"),
+		@NamedQuery(name = "unit.number", query = "Select u from Unit u where u.number = :number")
 })
 public class Unit {
 	

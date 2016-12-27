@@ -1,6 +1,7 @@
 package com.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -94,9 +95,10 @@ public class OrderManagerHibernateImpl implements OrderManager {
 	}
 
 	@Override
-	public List<Unit> getOwnedUnits(Unit unit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Unit> getOwnedUnits(Order order) {
+		order = (Order) sessionFactory.getCurrentSession().get(Order.class, order.getId());
+		List<Unit> units = new ArrayList<Unit>(order.getUnits());
+		return units;
 	}
 
 	@Override

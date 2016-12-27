@@ -13,37 +13,69 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.domain.Order;
+import com.domain.Unit;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/beans.xml" })
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
 @Transactional
 public class OrderManagerTest {
+	
 	@Autowired
 	OrderManager orderManager;
 	
 	
-	private final String NUMBER_1 = "ABC1234";
-	private final String DATE = "19-12-2000";
-	private final String CLIENT = "Kowalski";
+	private final String ONUMBER_1 = "ABC1234";
+	private final String DATE_1 = "19-12-2000";
+	private final String CLIENT_1 = "Kowalski";
+	
+	private final String UNUMBER_1 = "QWER1234";
+	private final String NAME_1 = "PART_1";
+	private final Double PRICE_1 = 100.0;
 	
 	@Test
 	public void addOrderCheck() {
-		List<Order> orders = orderManager.getAllOrders();
-		
-		for (Order order : orders){
-			if(order.getNumber().equals(NUMBER_1)){
-				orderManager.deleteOrder(order);
-			}
-		}
 		Order order = new Order();
-		order.setNumber(NUMBER_1);
-		order.setDate(DATE);
-		order.setClient(CLIENT);
+		order.setNumber(ONUMBER_1);
+		order.setDate(DATE_1);
+		order.setClient(CLIENT_1);
 		
 		orderManager.addOrder(order);
-		Order retrievedorder = orderManager.findOrderbyNumber(NUMBER_1);
+		Order retrievedOrder = orderManager.findOrderbyNumber(ONUMBER_1);
 		
-		assertEquals(NUMBER_1,retrievedorder.getNumber());
+		assertEquals(ONUMBER_1,retrievedOrder.getNumber());
+		assertEquals(DATE_1, retrievedOrder.getDate());
+		assertEquals(CLIENT_1, retrievedOrder.getClient());
+	}
+	
+	@Test
+	public void deleteOrderCheck(){
+		Unit unit1 = new Unit();
+		unit1.setNumber(UNUMBER_1);
+		unit1.setName(NAME_1);
+		unit1.setPirce(PRICE_1);
+		
+		orderManager.addUnit(unit1);
+		
+		Order order1 = new Order();
+		order1.setNumber(ONUMBER_1);
+		order1.setDate(DATE_1);
+		order1.setClient(CLIENT_1);
+		
+		orderManager.addOrder(order1);
+		
+		
+		int unitSize = orderManager.getAllUnits().size();
+		int orderSize = orderManager.getAllOrders().size();
+		
+		
+		
+		Order order = orderManager.findOrderbyNumber(ONUMBER_1);
+		Long orderID = order.getId();
+		orderManager.deleteOrder(order1);
+		
+		assertEquals(null,orderManager.findOrderbyId(orderID));
+		
+		
 	}
 }
