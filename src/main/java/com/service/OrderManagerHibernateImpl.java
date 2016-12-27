@@ -28,7 +28,7 @@ public class OrderManagerHibernateImpl implements OrderManager {
 	
 	@Override
 	public void addOrder(Order order) {
-		order.setId(null);
+		if(findOrderbyNumber(order.getNumber())==null)
 		sessionFactory.getCurrentSession().persist(order);
 	}
 
@@ -47,7 +47,7 @@ public class OrderManagerHibernateImpl implements OrderManager {
 		}
 		sessionFactory.getCurrentSession().delete(order);
 	}
-
+//
 	@Override
 	public Order findOrderbyId(Long id) {
 		return (Order) sessionFactory.getCurrentSession().getNamedQuery("order.id").setLong("id",id).uniqueResult();
@@ -59,9 +59,10 @@ public class OrderManagerHibernateImpl implements OrderManager {
 	}
 
 	@Override
-	public void addUnit(Unit unit) {
+	public Long addUnit(Unit unit) {
 		unit.setId(null);
 		sessionFactory.getCurrentSession().persist(unit);
+		return (Long)sessionFactory.getCurrentSession().save(unit);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,8 +73,19 @@ public class OrderManagerHibernateImpl implements OrderManager {
 
 	@Override
 	public void deleteUnit(Unit unit) {
-		// TODO Auto-generated method stub
+		Unit deleteunit = (Unit) sessionFactory.getCurrentSession().get(Unit.class, unit.getId());
 		
+		List<Order> orders = getAllOrders();
+		for(Order o : orders){
+			for(Unit u : o.getUnits()){
+				if(u.getId() == deleteunit.getId()){
+					o.getUnits().remove(o);
+					sessionFactory.getCurrentSession().update(o);
+					break;
+				}
+			}
+		}
+		sessionFactory.getCurrentSession().delete(deleteunit);
 	}
 
 	@Override

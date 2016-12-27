@@ -13,7 +13,7 @@ public interface OrderManager {
 	Order findOrderbyId(Long id);
 	Order findOrderbyNumber(String number);
 	
-	void addUnit(Unit unit);
+	Long addUnit(Unit unit);
 	List<Unit> getAllUnits();
 	void deleteUnit(Unit unit);
 	Unit findUnitById(Long id);
