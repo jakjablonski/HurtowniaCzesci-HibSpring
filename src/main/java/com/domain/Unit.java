@@ -11,7 +11,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
 		@NamedQuery(name = "unit.all", query = "Select u from Unit u"),
 		@NamedQuery(name = "unit.id", query = "Select u from Unit u where u.id = :id"),
-		@NamedQuery(name = "unit.number", query = "Select u from Unit u where u.number = :number")
+		@NamedQuery(name = "unit.notInSupply", query = "Select u from Unit u where u.inSupply = false")
 })
 public class Unit {
 	
@@ -19,7 +19,14 @@ public class Unit {
 	private String number;
 	private String name;
 	private double pirce;
+	private boolean inSupply = false;
 	
+	public boolean isInSupply(){
+		return inSupply;
+	}
+	public void setInSupply(boolean inSupply){
+		this.inSupply = inSupply;
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
@@ -47,7 +54,5 @@ public class Unit {
 		this.pirce = pirce;
 	}
 	
-	
-
 	
 }

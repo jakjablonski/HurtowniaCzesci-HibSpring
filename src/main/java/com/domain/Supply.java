@@ -16,15 +16,16 @@ import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "order.all", query = "Select o from Order o"),
-		@NamedQuery(name = "order.id", query = "Select o from Order o where o.id = :id"),
-		@NamedQuery(name = "order.number", query = "Select o from Order o where o.number = :number")
+	@NamedQuery(name = "supply.all", query = "Select s from Supply s"),
+	@NamedQuery(name = "supply.id", query = "Select s from Supply s where s.id = :id"),
+	@NamedQuery(name = "supply.number", query = "Select s from Supply s where s.number = :number")
 })
-public class Order {
+public class Supply {
 	private Long id;
 	private String number;
 	private String date;
 	private String client;
+
 	private List<Unit> units = new ArrayList<Unit>();
 	
 	@Id
@@ -35,13 +36,14 @@ public class Order {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	public String getNumber() {
 		return number;
 	}
 	public void setNumber(String number) {
 		this.number = number;
 	}
+	
 	public String getDate() {
 		return date;
 	}
